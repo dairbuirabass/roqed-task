@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('size'); // what would be a better type?
-            $table->string('path')->nullable();
+            $table->string('extension');
+            $table->string('path');
             $table->timestamps();
         });
     }
