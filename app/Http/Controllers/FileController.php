@@ -12,7 +12,7 @@ class FileController extends Controller
      */
     public function index()
     {
-        return File::all();
+        return File::paginate(50);
     }
 
     /**
