@@ -8,9 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/test', function() {
-    return 'lol';
-});
-
 Route::get('/entries', [FileController::class, 'index']);
+Route::delete('/entries', [FileController::class, 'destroy']);
 

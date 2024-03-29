@@ -7,9 +7,10 @@ export const useEntryStore = defineStore({
     entries: [],
     currentPage: null,
     lastPage: null,
-    // entry: null,
+    entry: null,
     loading: false,
-    error: null
+    error: null,
+    deleteModalVisibility: false
   }),
   getters: {},
   actions: {
@@ -35,7 +36,29 @@ export const useEntryStore = defineStore({
     },
     setCurrentPage(page) {
         this.currentPage = page
-    }
+    },
+    setEntry(entryId) {
+        this.entry = entryId
+    },
+    setDeleteModalVisibility(visibility) {
+        this.deleteModalVisibility = visibility
+    },
     // async fetchEntry(id) {}
+    async deleteEntry() {
+        if (!entry) {
+            return
+        }
+        try {
+          axios.delete('api/entries', {
+              params: {
+                  id: entry
+              }
+          })
+        } catch (error) {
+          this.error = error
+        } finally {
+          this.loading = false
+        }
+    }
   }
 })
