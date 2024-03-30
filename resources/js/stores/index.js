@@ -9,6 +9,7 @@ export const useEntryStore = defineStore({
     lastPage: null,
     loading: false,
     error: null,
+    messages: []
   }),
   getters: {},
   actions: {
@@ -41,8 +42,11 @@ export const useEntryStore = defineStore({
         this.entries = []
         this.loading = true
         try {
-            axios.post('api/entries', formData, {
+            return axios.post('api/entries', formData, {
                 headers: { 'content-type': 'multipart/form-data' }
+            })
+            .then((res) => {
+                return res
             })
         } catch (error) {
             this.error = error

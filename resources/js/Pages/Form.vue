@@ -23,9 +23,12 @@
 
 <script setup>
 import { defineModel } from 'vue'
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia'
 
 import { useEntryStore } from '../stores'
+
+const router = useRouter();
 
 const { loading, error } = storeToRefs(useEntryStore())
 const { createEntry } = useEntryStore()
@@ -44,7 +47,10 @@ function submitForm() {
 	let formData = new FormData();
 	formData.append('title', title.value);
 	formData.append('file', file);
-    console.log(title.value)
 	createEntry(formData)
+      .then((res) => {
+        console.log(res)
+        router.push({ name: 'home'})
+      })
 }
 </script>
