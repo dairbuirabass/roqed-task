@@ -7,6 +7,9 @@ export const useEntryStore = defineStore({
     entries: [],
     currentPage: null,
     lastPage: null,
+    total: null,
+    from: null,
+    to: null,
     loading: false,
     error: null,
     messages: []
@@ -23,9 +26,12 @@ export const useEntryStore = defineStore({
             }
         })
         .then((res) => {
+            this.entries = res.data.data
             this.currentPage = res.data.current_page
             this.lastPage = res.data.last_page
-            this.entries = res.data.data
+            this.total = res.data.total
+            this.from = res.data.from
+            this.to = res.data.to
         })
       } catch (error) {
         this.error = error

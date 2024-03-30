@@ -13,7 +13,7 @@ class FileController extends Controller
      */
     public function index(Request $request)
     {
-        return File::paginate(50);
+        return File::orderBy('id', 'DESC')->paginate(50);
     }
 
     /**
@@ -24,12 +24,11 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-
         /** @var UploadedFile $file */
         $file = $request->file;
         $fileTitle = $request->title;
 
-        if (!$fileTitle) {
+        if (isset($fileTitle)) {
             $fileTitle = $file->getClientOriginalName();
         }
 

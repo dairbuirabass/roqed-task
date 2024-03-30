@@ -1,5 +1,8 @@
 <template>
   <nav aria-label="Table navigation">
+    <span class="text-sm text-gray-700 dark:text-gray-400">
+        Showing <span class="font-semibold text-gray-900 dark:text-white">{{ from }}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{ to }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ total }}</span> Entries
+    </span>
     <ul class="inline-flex -space-x-px text-base h-10">
       <li v-for="n in lastPage">
         <a @click="$emit('setPage', n)" href="#" :aria-current="(n == currentPage) ? 'page' : ''"
@@ -15,5 +18,8 @@
   const props = defineProps({
     currentPage: Number,
     lastPage: Number,
+    total: Number,
+    from: Number,
+    to: Number,
   });
 </script>

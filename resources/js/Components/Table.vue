@@ -15,8 +15,12 @@
         <tr v-for="(entry, index) in entries" :key="index"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="px-6 py-4">{{ entry.id }}</td>
-          <td class="px-6 py-4">{{ entry.title }}</td>
-          <td class="px-6 py-4">{{ entry.size }}</td>
+          <td class="px-6 py-4">
+            <a :href="getFileUrl(entry.path)">
+                {{ entry.title }}
+            </a>
+          </td>
+          <td class="px-6 py-4">{{ formatSize(entry.size) }}</td>
           <td class="px-6 py-4">{{ entry.extension }}</td>
           <td class="px-6 py-4">{{ entry.path }}</td>
           <td class="px-6 py-4">
@@ -34,4 +38,21 @@
 const props = defineProps({
   entries: Object
 });
+
+function getFileUrl(path) {
+    return window.location.origin + '/storage/' + path
+}
+
+function formatSize(size) {
+    let kilobyte = 1024;
+    let megabyte = kilobyte * 1024;
+
+    if (size < kilobyte) {
+        return size + ' B';
+    } else if (size < megabyte) {
+        return Math.round(size / kilobyte, 2) + ' KB';
+    } else {
+        return Math.round(size / megabyte, 2) + ' MB';
+    }
+}
 </script>

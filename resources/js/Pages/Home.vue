@@ -4,7 +4,7 @@
         <p v-if="error">{{ error.message }}</p>
         <RouterLink to="/form">Entry creation</RouterLink>
         <Table v-if="entries" :entries @deleteRow="deleteRow"></Table>
-        <Nav :currentPage :lastPage @setPage="setPage"></Nav>
+        <Nav :currentPage :lastPage :total :from :to @setPage="setPage"></Nav>
     </div>
 </template>
 
@@ -17,7 +17,7 @@
   import Nav from '@/Components/Nav.vue'
   import Table from '@/Components/Table.vue'
 
-  const { entries, currentPage, lastPage, loading, error } = storeToRefs(useEntryStore())
+  const { entries, currentPage, lastPage, total, from, to, loading, error } = storeToRefs(useEntryStore())
   const { fetchEntries, setCurrentPage, deleteEntry } = useEntryStore()
 
   onMounted(() => {
