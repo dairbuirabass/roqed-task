@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class FileController extends Controller
 {
@@ -17,10 +18,33 @@ class FileController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param Request @request
+     * return
      */
     public function store(Request $request)
     {
-        //
+
+        /** @var UploadedFile $file */
+        $file = $request->file;
+        $fileTitle = $request->title;
+
+        if (!$fileTitle) {
+            $fileTitle = $file->getClientOriginalName();
+        }
+
+        $fileSize = $file->getSize();
+        $fileExtension = $file->getClientOriginalExtension();
+        $path = $file->store('files', 'public');
+
+        File::create([
+            'title' => $fileTitle,
+            'size' => (int) $fileSize,
+            'extension' => $fileExtension,
+            'path' => $path,
+        ]);
+
+        return response()->json(['success'=>'You have successfully upload file.']);
     }
 
     /**
@@ -42,10 +66,8 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(int $entryId)
     {
-        dd($request);
-        $entryId = $request->input('id');
         $entry = File::find($entryId);
         return $entry->delete();;
     }

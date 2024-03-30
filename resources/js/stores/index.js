@@ -7,10 +7,8 @@ export const useEntryStore = defineStore({
     entries: [],
     currentPage: null,
     lastPage: null,
-    entry: null,
     loading: false,
     error: null,
-    deleteModalVisibility: false
   }),
   getters: {},
   actions: {
@@ -37,23 +35,30 @@ export const useEntryStore = defineStore({
     setCurrentPage(page) {
         this.currentPage = page
     },
-    setEntry(entryId) {
-        this.entry = entryId
+    // async fetchEntry(entryId) {
+    // },
+    async createEntry(formData) {
+        this.entries = []
+        this.loading = true
+        try {
+            axios.post('api/entries', formData, {
+                headers: { 'content-type': 'multipart/form-data' }
+            })
+        } catch (error) {
+            this.error = error
+        }
     },
-    setDeleteModalVisibility(visibility) {
-        this.deleteModalVisibility = visibility
-    },
-    // async fetchEntry(id) {}
-    async deleteEntry() {
-        if (!entry) {
+    // async updateEntry(entryId) {
+    //     try {
+    //         axios.put(`api/entries/${entryId}`)
+    //     }
+    // },
+    async deleteEntry(entryId) {
+        if (!entryId) {
             return
         }
         try {
-          axios.delete('api/entries', {
-              params: {
-                  id: entry
-              }
-          })
+          axios.delete(`api/entries/${entryId}`)
         } catch (error) {
           this.error = error
         } finally {

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->string('size'); // what would be a better type?
-            $table->string('extension');
-            $table->string('path');
+            $table->integer('size')->nullable(false); // what would be a better type?
+            $table->string('extension')->nullable(false);
+            $table->string('path')->nullable(false);
             $table->timestamps();
         });
     }

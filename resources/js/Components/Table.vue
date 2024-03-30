@@ -21,7 +21,7 @@
           <td class="px-6 py-4">{{ entry.path }}</td>
           <td class="px-6 py-4">
             <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-            <a @click="$emit('openDeleteModal', entry.id)" href="#"
+            <a @click="$emit('deleteRow', entry.id)" href="#"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
           </td>
         </tr>
