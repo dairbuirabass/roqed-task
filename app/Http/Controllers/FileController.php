@@ -49,9 +49,9 @@ class FileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(File $file)
+    public function show(int $entryId)
     {
-        //
+        return File::find($entryId);
     }
 
     /**

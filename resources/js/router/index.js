@@ -10,6 +10,12 @@ const routes = [
         name: "form",
         path: "/form",
         component: () => import("@/Pages/Form.vue")
+    },
+        {
+        name: "formEdit",
+        path: "/form/:id",
+        component: () => import("@/Pages/Form.vue"),
+        props: true
     }
 ];
 

@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/entries', [FileController::class, 'index']);
+Route::get('/entries/{id}', [FileController::class, 'show']);
 Route::post('/entries', [FileController::class, 'store']);
 Route::put('/entries', [FileController::class, 'update']);
 Route::delete('/entries/{id}', [FileController::class, 'destroy']);
