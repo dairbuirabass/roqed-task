@@ -11,6 +11,6 @@ Route::get('/user', function (Request $request) {
 Route::get('/entries', [FileController::class, 'index']);
 Route::get('/entries/{id}', [FileController::class, 'show']);
 Route::post('/entries', [FileController::class, 'store']);
-Route::put('/entries', [FileController::class, 'update']);
+Route::post('/entries/{id}', [FileController::class, 'update']); // TODO implement with ::put
 Route::delete('/entries/{id}', [FileController::class, 'destroy']);
 

@@ -51,10 +51,8 @@ export const useEntryStore = defineStore({
       this.entry = []
       this.loading = true
       try {
-        console.log(entryId)
         return api.get(`api/entries/${entryId}`)
           .then((res) => {
-            console.log(res)
             return this.entry = res.data
           })
       } catch (error) {
@@ -77,11 +75,18 @@ export const useEntryStore = defineStore({
         this.error = error
       }
     },
-    // async updateEntry(entryId) {
-    //     try {
-    //         api.put(`api/entries/${entryId}`)
-    //     }
-    // },
+    async updateEntry(entryId, formData) {
+      try {
+        return api.post(`api/entries/${entryId}`, formData, {
+          headers: { 'content-type': 'multipart/form-data' }
+        })
+          .then((res) => {
+            return res
+          })
+      } catch (error) {
+        this.error = error
+      }
+    },
     async deleteEntry(entryId) {
       if (!entryId) {
         return

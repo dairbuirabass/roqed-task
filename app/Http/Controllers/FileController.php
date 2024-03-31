@@ -28,7 +28,7 @@ class FileController extends Controller
         $file = $request->file;
         $fileTitle = $request->title;
 
-        if (isset($fileTitle)) {
+        if (!isset($fileTitle)) {
             $fileTitle = $file->getClientOriginalName();
         }
 
@@ -43,7 +43,7 @@ class FileController extends Controller
             'path' => $path,
         ]);
 
-        return response()->json(['success'=>'You have successfully upload file.']);
+        return response()->json(['success'=>'You have successfully uploaded a file.']);
     }
 
     /**
@@ -57,9 +57,27 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, File $file)
+    public function update(Request $request, int $entryId)
     {
-        //
+        $entry = File::find($entryId);
+
+        if ($request->title) {
+            $entry->title = $request->title;
+        }
+
+        if ($request->file) {
+            /** @var UploadedFile $file */
+            $file = $request->file;
+            $entry->size = $file->getSize();
+            $entry->extension = $file->getClientOriginalExtension();
+            $entry->path = $file->store('files', 'public');
+        }
+
+        // TODO delete previous file
+
+        $entry->save();
+
+        return response()->json(['success'=>'You have successfully uploaded a file.']);
     }
 
     /**
@@ -68,6 +86,9 @@ class FileController extends Controller
     public function destroy(int $entryId)
     {
         $entry = File::find($entryId);
+
+        // TODO Delete file
+
         return $entry->delete();;
     }
 }
