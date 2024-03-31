@@ -4,7 +4,11 @@ const routes = [
     {
         name: "home",
         path: "/",
-        component: () => import("@/Pages/Home.vue")
+        component: () => import("@/Pages/Home.vue"),
+        params: {
+            'p': 1,
+            'search': ''
+        }
     },
     {
         name: "form",

@@ -6,6 +6,7 @@ export const useEntryStore = defineStore({
   state: () => ({
     entries: [],
     entry: [],
+    search: null,
     currentPage: null,
     lastPage: null,
     total: null,
@@ -23,7 +24,8 @@ export const useEntryStore = defineStore({
       try {
         api.get('api/entries', {
           params: {
-            page: this.currentPage
+            page: this.currentPage,
+            search: this.search
           }
         })
           .then((res) => {
@@ -39,6 +41,9 @@ export const useEntryStore = defineStore({
       } finally {
         this.loading = false
       }
+    },
+    setSearch(searchValue) {
+        this.search = searchValue
     },
     setCurrentPage(page) {
       this.currentPage = page

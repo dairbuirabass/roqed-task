@@ -16,7 +16,14 @@ class FileController extends Controller
      */
     public function index(Request $request)
     {
-        return File::orderBy('id', 'DESC')->paginate(50);
+        $files = File::when(
+            $request->input('search', ''),
+            function ($query, $search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            }
+        )->orderBy('id', 'DESC')->paginate(50);
+
+        return $files;
     }
 
     /**
