@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Table navigation">
+  <nav class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4" aria-label="Table navigation">
     <span class="text-sm text-gray-700 dark:text-gray-400">
         Showing <span class="font-semibold text-gray-900 dark:text-white">{{ from }}</span> to <span class="font-semibold text-gray-900 dark:text-white">{{ to }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ total }}</span> Entries
     </span>

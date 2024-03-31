@@ -2,7 +2,6 @@
     <div>
         <p v-if="loading">Loading posts...</p>
         <p v-if="error">{{ error.message }}</p>
-        <RouterLink to="/form">Entry creation</RouterLink>
         <Table v-if="entries" :entries @deleteRow="deleteRow" @editRow="editRow"></Table>
         <Nav :currentPage :lastPage :total :from :to @setPage="setPage"></Nav>
     </div>
