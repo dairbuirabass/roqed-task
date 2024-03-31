@@ -15,10 +15,15 @@
         <tr v-for="(entry, index) in entries" :key="index"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="px-6 py-4">{{ entry.id }}</td>
-          <td class="px-6 py-4">
+          <td class="flex justify-between items-center px-6 py-4">
             <a :href="getFileUrl(entry.path)">
                 {{ entry.title }}
             </a>
+            <img
+              v-if="entry.thumbnailPath"
+              class="h-auto max-w-xl rounded-lg shadow-xl dark:shadow-gray-800"
+              :src="getFileUrl(entry.thumbnailPath)"
+              alt="thumbnail">
           </td>
           <td class="px-6 py-4">{{ formatSize(entry.size) }}</td>
           <td class="px-6 py-4">{{ entry.extension }}</td>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('size')->nullable(false); // what would be a better type?
             $table->string('extension')->nullable(false);
             $table->string('path')->nullable(false);
+            $table->string('thumbnailPath')->nullable();
             $table->timestamps();
         });
     }

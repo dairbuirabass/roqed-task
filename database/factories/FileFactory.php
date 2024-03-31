@@ -20,7 +20,8 @@ class FileFactory extends Factory
             'title' => fake()->sentence(),
             'size' => fake()->randomNumber(),
             'extension' => fake()->fileExtension(),
-            'path' => fake()->url(),
+            'path' => fake()->filePath(),
+            'thumbnailPath' => null,
         ];
     }
 }

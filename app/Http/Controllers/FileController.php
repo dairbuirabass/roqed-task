@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class FileController extends Controller
 {
@@ -36,11 +39,17 @@ class FileController extends Controller
         $fileExtension = $file->getClientOriginalExtension();
         $path = $file->store('files', 'public');
 
+        $thumbnailPath = null;
+        if(substr($file->getMimeType(), 0, 5) == 'image') {
+            $thumbnailPath = $this->generateThumbnail($file);
+        }
+
         File::create([
             'title' => $fileTitle,
             'size' => (int) $fileSize,
             'extension' => $fileExtension,
             'path' => $path,
+            'thumbnailPath' => $thumbnailPath
         ]);
 
         return response()->json(['success'=>'You have successfully uploaded a file.']);
@@ -66,14 +75,22 @@ class FileController extends Controller
         }
 
         if ($request->file) {
+            Storage::delete('public/' . $entry->path);
+            if ($entry->thumbnailPath) {
+                Storage::delete('public/' . $entry->thumbnailPath);
+            }
+
             /** @var UploadedFile $file */
             $file = $request->file;
             $entry->size = $file->getSize();
             $entry->extension = $file->getClientOriginalExtension();
             $entry->path = $file->store('files', 'public');
-        }
 
-        // TODO delete previous file
+            if(substr($file->getMimeType(), 0, 5) == 'image') {
+                $thumbnailPath = $this->generateThumbnail($file);
+                $entry->thumbnailPath = $thumbnailPath;
+            }
+        }
 
         $entry->save();
 
@@ -87,8 +104,26 @@ class FileController extends Controller
     {
         $entry = File::find($entryId);
 
-        // TODO Delete file
+        Storage::delete($entry->path);
 
         return $entry->delete();;
+    }
+
+    private function generateThumbnail($file)
+    {
+        $manager = new ImageManager(new Driver());
+        $generatedName = hexdec(uniqid()) . '.' . $file->getClientOriginalExtension();
+        $image = $manager->read($file);
+
+        $image = $image->resize(100, 100);
+        $encoded = $image->encodeByMediaType('image/jpeg');
+        // TO DO improve storing of the thumbnail with Laravel logic
+
+        $path = 'thumbnails/' . $generatedName;
+
+        $uploaded = Storage::put('public/' . $path, $encoded);
+        if ($uploaded) {
+            return $path;
+        }
     }
 }
