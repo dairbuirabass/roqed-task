@@ -2,27 +2,23 @@ import { defineStore } from 'pinia'
 import { api } from '@/api';
 
 export const useEntryStore = defineStore({
-  id: 'entry',
+  id: 'entries',
   state: () => ({
     entries: [],
     entry: [],
-    search: null,
-    currentPage: null,
-    lastPage: null,
-    total: null,
-    from: null,
-    to: null,
-    loading: false,
-    error: null,
-    messages: []
+    search: '',
+    currentPage: 1,
+    lastPage: undefined,
+    total: undefined,
+    from: 0,
+    to: undefined,
+    error: []
   }),
-  getters: {},
   actions: {
     async fetchEntries() {
       this.entries = []
-      this.loading = true
       try {
-        api.get('api/entries', {
+        return api.get('api/entries', {
           params: {
             page: this.currentPage,
             search: this.search
@@ -38,12 +34,10 @@ export const useEntryStore = defineStore({
           })
       } catch (error) {
         this.error = error
-      } finally {
-        this.loading = false
       }
     },
     setSearch(searchValue) {
-        this.search = searchValue
+      this.search = searchValue
     },
     setCurrentPage(page) {
       this.currentPage = page
@@ -52,9 +46,7 @@ export const useEntryStore = defineStore({
       if (!entryId) {
         return
       }
-
       this.entry = []
-      this.loading = true
       try {
         return api.get(`api/entries/${entryId}`)
           .then((res) => {
@@ -62,13 +54,10 @@ export const useEntryStore = defineStore({
           })
       } catch (error) {
         this.error = error
-      } finally {
-        this.loading = false
       }
     },
     async createEntry(formData) {
       this.entries = []
-      this.loading = true
       try {
         return api.post('api/entries', formData, {
           headers: { 'content-type': 'multipart/form-data' }
@@ -100,8 +89,6 @@ export const useEntryStore = defineStore({
         return api.delete(`api/entries/${entryId}`)
       } catch (error) {
         this.error = error
-      } finally {
-        this.loading = false
       }
     }
   }

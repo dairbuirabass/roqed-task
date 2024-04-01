@@ -1,10 +1,9 @@
 <template>
-    <div>
-        <p v-if="loading">Loading posts...</p>
-        <p v-if="error">{{ error.message }}</p>
-        <Table v-if="entries" :entries :searchValue="search" @search="submitSearch" @deleteRow="deleteRow" @editRow="editRow"></Table>
-        <Nav :currentPage :lastPage :total :from :to @setPage="setPage"></Nav>
-    </div>
+  <div>
+    <Table v-if="entries" :entries :searchValue="search" @search="submitSearch" @deleteRow="deleteRow"
+      @editRow="editRow"></Table>
+    <Nav :currentPage :lastPage :total :from :to @setPage="setPage"></Nav>
+  </div>
 </template>
 
 <script setup>
@@ -20,7 +19,7 @@
   const route = useRoute();
   const router = useRouter();
 
-  const { entries, search, currentPage, lastPage, total, from, to, loading, error } = storeToRefs(useEntryStore())
+  const { entries, search, currentPage, lastPage, total, from, to } = storeToRefs(useEntryStore())
   const { fetchEntries, setSearch, setCurrentPage, deleteEntry } = useEntryStore()
 
   onBeforeMount(() => {
@@ -40,7 +39,7 @@
 
   function deleteRow(entryId) {
     deleteEntry(entryId)
-    .then(() => fetchEntries())
+      .then(() => fetchEntries())
   }
 
   function editRow(entryId) {

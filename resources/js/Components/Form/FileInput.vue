@@ -23,35 +23,35 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+  import { ref, defineEmits } from 'vue'
 
-const isDragOver = ref(false);
-const fileInput = ref(null);
-const fileName = ref(null);
+  const isDragOver = ref(false);
+  const fileInput = ref(null);
+  const fileName = ref(null);
 
-const emit = defineEmits(['changeFile']);
+  const emit = defineEmits(['changeFile']);
 
-function updateInputValue() {
-  emit('changeFile', fileInput.value.files);
-  if (fileInput.value.files.length > 0) {
-    fileName.value = fileInput.value.files[0].name;
+  function updateInputValue() {
+    emit('changeFile', fileInput.value.files);
+    if (fileInput.value.files.length > 0) {
+      fileName.value = fileInput.value.files[0].name;
+    }
   }
-}
 
-const handleDrop = (event) => {
-  isDragOver.value = false;
-  const files = event.dataTransfer.files;
-  if (files.length > 0) {
-    fileName.value = files[0].name;
-    emit('changeFile', files);
-  }
-};
+  const handleDrop = (event) => {
+    isDragOver.value = false;
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      fileName.value = files[0].name;
+      emit('changeFile', files);
+    }
+  };
 
-const dragEnter = () => {
-  isDragOver.value = true;
-};
+  const dragEnter = () => {
+    isDragOver.value = true;
+  };
 
-const dragLeave = () => {
-  isDragOver.value = false;
-};
+  const dragLeave = () => {
+    isDragOver.value = false;
+  };
 </script>
