@@ -54,7 +54,13 @@
         </tr>
       </tbody>
     </table>
-    <PopupModal :key="deleteRowId" :show="openModal" @submitModal="submitDeleteRowModal" @closeModal="closeDeleteRowModal"></PopupModal>
+    <PopupModal
+        :key="deleteRowId"
+        :show="openModal"
+        text="Are you sure you want to delete this product?"
+        @submitModal="submitDeleteRowModal"
+        @closeModal="closeDeleteRowModal">
+    </PopupModal>
   </div>
 </template>
 
@@ -71,7 +77,7 @@ const search = ref('')
 const deleteRowId = ref()
 let openModal = false
 
-const emit = defineEmits(['deleteRow']);
+const emit = defineEmits(['search', 'editRow', 'deleteRow']);
 
 onBeforeMount(() => {
   search.value = props.searchValue
