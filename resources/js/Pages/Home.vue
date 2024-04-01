@@ -2,7 +2,7 @@
     <div>
         <p v-if="loading">Loading posts...</p>
         <p v-if="error">{{ error.message }}</p>
-        <Table v-if="entries" :entries :searchValue="route.query.search" @search="submitSearch" @deleteRow="deleteRow" @editRow="editRow"></Table>
+        <Table v-if="entries" :entries :searchValue="search" @search="submitSearch" @deleteRow="deleteRow" @editRow="editRow"></Table>
         <Nav :currentPage :lastPage :total :from :to @setPage="setPage"></Nav>
     </div>
 </template>
@@ -25,6 +25,7 @@
 
   onBeforeMount(() => {
     setSearch(route.query.search)
+    fetchEntries()
   })
 
   onMounted(() => {
@@ -32,7 +33,9 @@
   })
 
   function submitSearch(searchString) {
+    setSearch(searchString)
     router.push({ name: 'home', query: { 'search': searchString } })
+    fetchEntries()
   }
 
   function deleteRow(entryId) {
