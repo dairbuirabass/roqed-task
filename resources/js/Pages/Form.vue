@@ -1,4 +1,5 @@
 <template>
+  <div id="progress-bar"></div>
   <form class="max-w-lg mx-auto">
     <div class="mb-5">
       <TitleInput :key="componentKey" :title @updateTitle="updateTitle"></TitleInput>
@@ -31,6 +32,8 @@
   import { ref, onMounted, onBeforeMount } from 'vue'
   import { useRouter } from 'vue-router';
   import { storeToRefs } from 'pinia'
+  import progressBar from 'progressbar.js';
+
 
   import { useEntryStore } from '../stores'
 
@@ -111,6 +114,9 @@
       formData.append('file', file)
     }
 
+    const bar = new progressBar.Line('#progress-bar', {easing: 'easeInOut'})
+    bar.animate(1)
+
     if (isEdit) {
       updateEntry(props.id, formData)
         .then((res) => {
@@ -122,6 +128,13 @@
         })
     } else {
         createEntry(formData)
+        .then((res) => {
+          if (res.data.success) {
+            router.push({ name: 'home' }) // TODO implement messages
+          } else {
+            alert('Reqesut failed with message:' + res.data.error) // TODO implement messages
+          }
+        })
     }
   }
 
