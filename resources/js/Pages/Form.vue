@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submitForm" class="max-w-lg mx-auto">
     <div class="mb-5">
-      <TitleInput :key="componentKey" :title @updateTitleValue="updateTitleValue"></TitleInput>
+      <TitleInput :key="componentKey" :title @updateTitle="updateTitle"></TitleInput>
     </div>
     <div>
       <FileInput @changeFile="changeFile"></FileInput>
@@ -56,17 +56,21 @@
     }
   })
 
-  function updateTitleValue(newValue) {
-    title.value = newValue
+  function updateTitle(newTitle) {
+    title.value = newTitle
   }
 
-  function changeFile(newValue) {
-    files.value = newValue
+  function changeFile(newFile) {
+    files.value = newFile
   }
 
   function submitForm() {
     const isEdit = props.id
-    const hasFiles = !(files.value.length == 0)
+    let hasFiles = false
+
+    if (files.value) {
+        hasFiles = !(files.value.length == 0)
+    }
 
     // Validate file is selected
     if (!isEdit && !hasFiles) {
@@ -95,6 +99,7 @@
     }
 
     if (isEdit) {
+        console.log(formData)
       updateEntry(props.id, formData)
         .then((res) => {
           if (res.data.success) {

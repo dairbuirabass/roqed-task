@@ -40,6 +40,7 @@
 
   function deleteRow(entryId) {
     deleteEntry(entryId)
+    .then(() => fetchEntries())
   }
 
   function editRow(entryId) {

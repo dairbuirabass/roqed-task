@@ -29,7 +29,7 @@
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="px-6 py-4">{{ entry.id }}</td>
           <td class="flex justify-between items-center px-6 py-4">
-            <a :href="getFileUrl(entry.path)">
+            <a :href="getFileUrl(entry.path)" class="underline">
                 {{ entry.title }}
             </a>
             <img
@@ -46,7 +46,7 @@
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
               Edit
             </a>
-            <a @click.prevent="$emit('deleteRow', entry.id)" href="#"
+            <a @click.prevent="openDeleteRowModal(entry.id)" href="#"
               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
               Delete
             </a>
@@ -54,22 +54,28 @@
         </tr>
       </tbody>
     </table>
+    <PopupModal :key="deleteRowId" :show="openModal" @submitModal="submitDeleteRowModal" @closeModal="closeDeleteRowModal"></PopupModal>
   </div>
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, defineEmits } from 'vue'
+import PopupModal from '@/Components/PopupModal.vue'
 
 const props = defineProps({
   entries: Object,
   searchValue: String
 });
 
+const search = ref('')
+const deleteRowId = ref()
+let openModal = false
+
+const emit = defineEmits(['deleteRow']);
+
 onBeforeMount(() => {
   search.value = props.searchValue
 })
-
-const search = ref('')
 
 function getFileUrl(path) {
     return window.location.origin + '/storage/' + path
@@ -86,5 +92,19 @@ function formatSize(size) {
     } else {
         return Math.round(size / megabyte, 2) + ' MB';
     }
+}
+
+function openDeleteRowModal(entryId) {
+    deleteRowId.value = entryId
+    openModal = true
+}
+
+function closeDeleteRowModal() {
+    deleteRowId.value = null
+    openModal = false
+}
+
+function submitDeleteRowModal() {
+    emit('deleteRow', parseInt(deleteRowId.value));
 }
 </script>

@@ -97,7 +97,7 @@ export const useEntryStore = defineStore({
         return
       }
       try {
-        api.delete(`api/entries/${entryId}`)
+        return api.delete(`api/entries/${entryId}`)
       } catch (error) {
         this.error = error
       } finally {

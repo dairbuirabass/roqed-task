@@ -15,7 +15,7 @@
     title: String,
   });
 
-  const emit = defineEmits(['updateTitleValue']);
+  const emit = defineEmits(['updateTitle']);
 
   onMounted(() => {
     if (props.title) {
@@ -24,6 +24,6 @@
   })
 
   function updateInputValue() {
-    emit('updateTitleValue', titleValue.value);
+    emit('updateTitle', titleValue.value);
   }
 </script>
